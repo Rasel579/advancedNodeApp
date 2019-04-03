@@ -9,11 +9,11 @@ class CustomPage {
 
         const customPage = new CustomPage(page);
 
-        return new Proxy(customPage, ({
+        return new Proxy(customPage, {
             get: function(target, property){
                 return target[property] || page[property] || browser[property];
             }
-        }))
+        });
     }
 
         constructor(page) {
@@ -22,3 +22,5 @@ class CustomPage {
 
     
 }
+
+module.exports = CustomPage;
