@@ -17,20 +17,16 @@ mongoose.Query.prototype.exec = async function(){
     if(!this.useCache){
         return exec.apply(this, arguments);
     }
-    console.log('Im about to run a query');
-    console.log('getQuery method: ', this.getQuery());
-    console.log('mongooseCollection method: ' + this.mongooseCollection.name);
+    
     const key = JSON.stringify(Object.assign({}, this.getQuery(), 
     { collection: this.mongooseCollection.name }
     ));
-    console.log('key: ' + key);
     // See if we have a value for 'key' in redis
     const cacheValue = await client.hget(this.hashKey, key);
 
     //if we do , return that
       if (cacheValue){
-          console.log('scope', this);
-          console.log('Here is cacheValue: '+ cacheValue);
+         
           const doc = JSON.parse(cacheValue);
 
       return Array.isArray(doc) 
